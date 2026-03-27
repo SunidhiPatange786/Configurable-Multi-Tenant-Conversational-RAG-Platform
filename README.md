@@ -289,80 +289,101 @@ python eval.py
 
 ## Demo (Screenshots)
 
-This section walks through the end-to-end flow: admin setup → topic creation → document ingestion → user chat → Pinecone verification → evaluation results.
+This section shows the end-to-end workflow of the platform: **Admin setup → Topic creation → Document upload → Member access → User chat → Pinecone verification → Evaluation**.
 
-> All screenshots are stored in the `screenshots/` folder  
+> All screenshots are stored in: `docs/screenshots/`
 
+---
 
 ### 1) App Landing / Role Selection
-Shows the starting page where users choose between **Admin** and **Employee/User** mode.
-![Landing](screenshots/01_landing.png)
+Users start on the landing page and choose between **Admin** and **Employee/User** modes.
+![Landing](docs/screenshots/01_landing.png)
+
+---
 
 ### 2) Admin Login
-Admin authentication screen used to access protected actions like creating topics, uploading documents, and adding users.
-![Admin Login](screenshots/02_admin%20login%20page.png)
+Admin authentication screen used to access protected actions like creating topics, uploading documents, and managing members.
+![Admin Login](docs/screenshots/02_admin%20login%20page.png)
+
+---
 
 ### 3) Admin Dashboard (Overview)
-Admin dashboard entry point showing the main workflow sections:
+Admin dashboard entry point showing the full workflow sections:
 - Create Topic
 - Select Topic
 - Upload Documents
 - Add Employee/User to Topic
-![Admin Dashboard](screenshots/03_admin%20dashboard%201.png)
-
-### 4) Create Topic (Draft Prompt)
-Creating a new topic (tenant workspace) with a **topic behavior prompt** that controls how the agent responds.
-![Create Topic - Draft Prompt](screenshots/04_admin%20dashboard%202%20(creating%20topic).png)
-
-### 5) Create Topic (Topic Selected)
-Topic is configured and selected, ready for ingestion and membership assignment.
-![Create Topic - Selected](screenshots/05_admin%20dashboard%203(creating%20topic).png)
-
-### 6) Improve Prompt (Prompt Engineering)
-The system improves the admin’s draft into a stronger **topic behavior prompt** (grounded, citation-required, safe).
-![Improve Prompt](screenshots/06_admin%20dashboard%204%20(improving%20prompt).png)
-
-### 7) Upload Documents (Ingestion → Pinecone)
-Admin uploads PDFs/TXT files into the selected topic. The backend chunks, embeds, and upserts vectors into the topic namespace.
-![Upload Documents](screenshots/07_admin%20dashboard%20(Uploading%20Documents).png)
-
-### 8) User Login
-Employee/User logs in and can access only topics they are a member of.
-![User Login](screenshots/08_User%20login%20Page.png)
-
-### 9) User Chat (RAG + Citations + Fallback)
-Demonstrates:
-- Small talk handling
-- Topic-grounded Q&A using uploaded documents
-- Safe fallback when the answer is not found in the documents
-![User Chat](screenshots/09_User%20Chat%20with%20Ragbot.png)
-
-### 10) Pinecone Dashboard (Index View)
-Shows the Pinecone index used to store dense vectors for retrieval.
-![Pinecone Dashboard](screenshots/10_Pinecone%20dashboard%201.png)
-
-### 11) Pinecone Namespace (Per-Topic Isolation)
-Each topic uses a separate **Pinecone namespace** (e.g., `topic-ncleus-...`) to isolate tenant data and prevent cross-topic leakage.
-![Pinecone Namespace](screenshots/11_Pinecone%20namespace.png)
+![Admin Dashboard](docs/screenshots/03_admin%20dashboard%201.png)
 
 ---
 
-## Evaluation
+### 4) Create Topic (Draft Prompt)
+Admin enters a **topic name** and a **draft topic behavior prompt** (role-specific instruction set for that topic).
+![Create Topic - Draft Prompt](docs/screenshots/04_admin%20dashboard%202%20(creating%20topic).png)
 
-Evaluation is run using `eval.py` against a curated question set (example: nucleus topic).  
-Metrics include:
-- **Recall@5 / Recall@10** (retrieval success)
-- **MRR** (ranking quality)
-- Optional: citation hit rate + semantic similarity (when answer generation is enabled)
+---
 
-### 12) Evaluation Results (Retrieval-Only) — Run 1
-Retrieval-only mode (no LLM calls) to avoid LLM quota limits and isolate retrieval quality.
-![Eval Retrieval Only - 1](screenshots/12_Evaluation%20Results%201(Retrieval%20only).png)
+### 5) Topic Created (Admin View)
+Topic is successfully created and becomes selectable in the admin dashboard.
+![Topic Created](docs/screenshots/05_admin%20dashboard%203(creating%20topic).png)
 
-### 13) Evaluation Results (Retrieval-Only) — Run 2
-Additional retrieval run confirming stable retrieval metrics across the dataset.
-![Eval Retrieval Only - 2](screenshots/13_Evaluation%20Results%202(Retrieval%20only).png)
+---
+
+### 6) Improve Prompt (Auto Prompt Engineering)
+Admin clicks **Improve Prompt** to automatically rewrite the draft into a stronger, system-ready topic behavior prompt (grounded + citation rules + safety).
+![Improve Prompt](docs/screenshots/06_admin%20dashboard%204%20(improving%20prompt).png)
+
+---
+
+### 7) Upload Documents to Topic
+Admin uploads PDF/TXT files into the selected topic. These documents are chunked, embedded, and stored in Pinecone under the topic’s namespace.
+![Upload Documents](docs/screenshots/07_admin%20dashboard%20(Uploading%20Documents).png)
+
+---
+
+### 8) User Login (Employee/User)
+An employee logs in (or signs up). The system assigns them a user_id and loads only the topics they have access to.
+![User Login](docs/screenshots/08_User%20login%20Page.png)
+
+---
+
+### 9) User Chat (RAG + Fallback Behavior)
+User chats inside a selected topic:
+- Topic-grounded questions return **document-based answers**.
+- Out-of-scope questions trigger the fallback response format.
+![User Chat](docs/screenshots/09_User%20Chat%20with%20Ragbot.png)
+
+---
+
+### 10) Pinecone Dashboard (Index View)
+Pinecone index view showing the vector database is populated and operational.
+![Pinecone Dashboard](docs/screenshots/10_Pinecone%20dashboard%201.png)
+
+---
+
+### 11) Pinecone Namespace (Topic Isolation)
+The **namespace** view confirms multi-tenant isolation: each topic’s embeddings are stored in a separate namespace.
+![Pinecone Namespace](docs/screenshots/11_Pinecone%20namespace.png)
+
+---
+
+### 12) Evaluation Results (Retrieval-Only Metrics)
+Evaluation script validates retrieval quality using:
+- Recall@5
+- Recall@10
+- MRR
+![Evaluation Retrieval Only 1](docs/screenshots/12_Evaluation%20Results%201(Retrieval%20only).png)
+
+---
+
+### 13) Evaluation Results (Retrieval-Only Continued)
+Additional retrieval-only evaluation output (full test set).
+![Evaluation Retrieval Only 2](docs/screenshots/13_Evaluation%20Results%202(Retrieval%20only).png)
+
+---
 
 ### 14) Evaluation Results (Retrieval + Semantic Similarity)
-Full mode example showing retrieval + generated answers compared against expected answers using semantic similarity.
-![Eval Retrieval + Similarity](screenshots/14_Evaluation%20Results%20(retrieval%20+Semantic%20Similarity).png)
+Extended evaluation including:
+- Retrieval metrics (Recall@K, MRR)
+- Semantic similarity score (answer vs expected answer)
+![Evaluation Retrieval + Similarity](docs/screenshots/14_Evaluation%20Results%20(retrieval%20+Semantic%20Similarity).png)
