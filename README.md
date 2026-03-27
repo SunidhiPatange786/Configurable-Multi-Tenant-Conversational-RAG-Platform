@@ -273,7 +273,7 @@ streamlit run frontend/app.py
   *Memory: “What was my first question?”
 
 ##**Evaluation**
-**Option A (Retrieval-Only Evaluation) ✅ Most reliable**
+**Option A (Retrieval-Only Evaluation)  Most reliable**
 source venv/bin/activate
 export USER_ID="User ID"
 export TOPIC_ID="Topic ID"
