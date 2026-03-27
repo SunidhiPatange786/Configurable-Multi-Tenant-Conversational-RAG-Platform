@@ -287,7 +287,7 @@ export TIMEOUT=180
 export ANSWER_DELAY_SEC=5
 python eval.py
 
-
+##Architecture: Detailed architecture  flow is available in docs/architecture/.
 ## Demo (Screenshots)
 
 All demo screenshots are stored in: `docs/screenshots/`
