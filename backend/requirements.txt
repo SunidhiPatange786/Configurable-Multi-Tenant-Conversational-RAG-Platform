@@ -31,7 +31,7 @@ torch==2.2.1
 numpy==1.26.4
 
 # --- Reranker ---
-cross-encoder==0.1.0
+#cross-encoder==0.1.0
 
 # --- Document loaders (if you still use them) ---
 pypdf==4.1.0
